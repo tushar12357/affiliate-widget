@@ -16,7 +16,7 @@ class ReactWidget extends HTMLElement {
     const container = document.createElement("div");
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://affiliate-widget.vercel.app//react-widget-affiliate.css";
+    link.href = "https://affiliate-widget.vercel.app/react-widget-affiliate.css";
 
     // Append the stylesheet and container to the Shadow DOM
     this.shadowRoot?.appendChild(link);
