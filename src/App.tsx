@@ -130,7 +130,6 @@ const App: React.FC = () => {
     amount?: string;
   }>();
 
-
   const plans: Plan[] = [
     {
       price: 29,
@@ -200,7 +199,7 @@ const App: React.FC = () => {
   const filteredPlan = selectedAmount
     ? plans.find((plan) => plan.price === selectedAmount)
     : null;
-console.log(filteredPlan)
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#483D8B] py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -213,7 +212,7 @@ console.log(filteredPlan)
             referral management platform
           </p>
         </div>
-        <div className="flex flex-col lg:flex-row items-center justify-center">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
           {filteredPlan ? (
             <PriceCard
               price={filteredPlan.price}
@@ -226,9 +225,19 @@ console.log(filteredPlan)
               onPlanSelect={handlePlanSelect}
             />
           ) : (
-            <p className="text-white text-lg">
-              No plan found for the specified amount.
-            </p>
+            plans.map((plan) => (
+              <PriceCard
+                key={plan.priceId}
+                price={plan.price}
+                planName={plan.planName}
+                isPopular={plan.isPopular}
+                features={plan.features}
+                icon={plan.icon}
+                buttonText={plan.buttonText}
+                priceId={plan.priceId}
+                onPlanSelect={handlePlanSelect}
+              />
+            ))
           )}
         </div>
         <div className="text-center mt-12">
