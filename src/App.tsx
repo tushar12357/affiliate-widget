@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Check, Star, Zap, Crown } from "lucide-react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 interface PriceCardProps {
   price: number;
@@ -24,7 +24,8 @@ const PriceCard: React.FC<PriceCardProps> = ({
   priceId,
   onPlanSelect,
 }) => {
-  const { affiliateCode } = useParams<{ affiliateCode?: string }>();
+  const [searchParams] = useSearchParams();
+  const affiliateCode = searchParams.get("code") || undefined;
 
   const handlePlanSelect = async () => {
     try {
@@ -124,11 +125,10 @@ interface Plan {
 
 const App: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const { priceId, affiliateCode, amount } = useParams<{
-    priceId?: string;
-    affiliateCode?: string;
-    amount?: string;
-  }>();
+  const [searchParams] = useSearchParams();
+  const priceId = searchParams.get("price_id") || undefined;
+  const affiliateCode = searchParams.get("code") || undefined;
+  const amount = searchParams.get("amount") || undefined;
 
   const plans: Plan[] = [
     {
