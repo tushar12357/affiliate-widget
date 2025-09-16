@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-// import { WidgetProvider } from "./constexts/WidgetContext";
 import "./index.css";
 
 class ReactWidget extends HTMLElement {
@@ -18,19 +17,29 @@ class ReactWidget extends HTMLElement {
     link.rel = "stylesheet";
     link.href = "https://affiliate-widget.vercel.app/react-widget-affiliate.css";
 
-    // Append the stylesheet and container to the Shadow DOM
     this.shadowRoot?.appendChild(link);
     this.shadowRoot?.appendChild(container);
 
+    // Get query parameters from the URL
+    const urlParams = new URLSearchParams(window.location.search);
     const agent_id = this.getAttribute("agent_id") || "";
     const schema = this.getAttribute("schema") || "";
     const type = this.getAttribute("type") || "";
+    const affiliateCode = urlParams.get("code") || undefined;
+    const priceId = urlParams.get("price_id") || undefined;
+    const amount = urlParams.get("amount") || undefined;
+
     this.root = ReactDOM.createRoot(container);
     this.root.render(
       <React.StrictMode>
-        {/* <WidgetProvider agent_id={agent_id} schema={schema} type={type}> */}
-          <App />
-        {/* </WidgetProvider> */}
+        <App
+          affiliateCode={affiliateCode}
+          priceId={priceId}
+          amount={amount}
+          agent_id={agent_id}
+          schema={schema}
+          type={type}
+        />
       </React.StrictMode>
     );
   }

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Check, Star, Zap, Crown } from "lucide-react";
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
 
 interface PriceCardProps {
   price: number;
@@ -11,6 +10,7 @@ interface PriceCardProps {
   icon: React.ReactNode;
   buttonText: string;
   priceId: string;
+  affiliateCode?: string;
   onPlanSelect: (priceId: string, affiliateCode: string | undefined) => void;
 }
 
@@ -22,11 +22,9 @@ const PriceCard: React.FC<PriceCardProps> = ({
   icon,
   buttonText,
   priceId,
+  affiliateCode,
   onPlanSelect,
 }) => {
-  const [searchParams] = useSearchParams();
-  const affiliateCode = searchParams.get("code") || undefined;
-
   const handlePlanSelect = async () => {
     try {
       const response = await axios.post(
@@ -123,12 +121,22 @@ interface Plan {
   features: string[];
 }
 
-const App: React.FC = () => {
+interface AppProps {
+  affiliateCode?: string;
+  priceId?: string;
+  amount?: string;
+  agent_id?: string;
+  schema?: string;
+  type?: string;
+}
+
+const App: React.FC<AppProps> = ({
+  affiliateCode,
+  priceId,
+  amount,
+  // agent_id, schema, type // Unused for now, but included for future use
+}) => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const [searchParams] = useSearchParams();
-  const priceId = searchParams.get("price_id") || undefined;
-  const affiliateCode = searchParams.get("code") || undefined;
-  const amount = searchParams.get("amount") || undefined;
 
   const plans: Plan[] = [
     {
@@ -222,6 +230,7 @@ const App: React.FC = () => {
               icon={filteredPlan.icon}
               buttonText={filteredPlan.buttonText}
               priceId={filteredPlan.priceId}
+              affiliateCode={affiliateCode}
               onPlanSelect={handlePlanSelect}
             />
           ) : (
@@ -235,6 +244,7 @@ const App: React.FC = () => {
                 icon={plan.icon}
                 buttonText={plan.buttonText}
                 priceId={plan.priceId}
+                affiliateCode={affiliateCode}
                 onPlanSelect={handlePlanSelect}
               />
             ))
